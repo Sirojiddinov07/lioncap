@@ -2798,3 +2798,112 @@ INFO 2026-05-09 12:41:06,610 autoreload 14620 8446795520 /Users/sirojiddinovsavr
 INFO 2026-05-09 12:41:06,851 autoreload 14626 8446795520 Watching for file changes with StatReloader
 INFO 2026-05-09 12:41:29,366 autoreload 14626 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/settings.py changed, reloading.
 INFO 2026-05-09 12:41:29,542 autoreload 14633 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:20:18,178 autoreload 14943 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:20:34,792 log 14943 6130741248 Not Found: /login/
+WARNING 2026-05-09 13:20:34,835 log 14943 6147567616 Not Found: /favicon.ico
+INFO 2026-05-09 13:22:30,312 autoreload 14943 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/settings.py changed, reloading.
+INFO 2026-05-09 13:22:30,553 autoreload 14974 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:22:40,886 log 14974 6205403136 Not Found: /login/
+WARNING 2026-05-09 13:22:41,615 log 14974 6205403136 Not Found: /login/
+WARNING 2026-05-09 13:22:42,115 log 14974 6205403136 Not Found: /login/
+WARNING 2026-05-09 13:22:42,345 log 14974 6205403136 Not Found: /login/
+INFO 2026-05-09 13:24:10,953 autoreload 14974 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/users/views.py changed, reloading.
+INFO 2026-05-09 13:24:11,236 autoreload 14997 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:24:16,040 log 14997 6168047616 Not Found: /login/
+WARNING 2026-05-09 13:24:16,714 log 14997 6168047616 Not Found: /login/
+WARNING 2026-05-09 13:24:17,047 log 14997 6168047616 Not Found: /login/
+WARNING 2026-05-09 13:24:17,226 log 14997 6168047616 Not Found: /login/
+INFO 2026-05-09 13:24:58,641 autoreload 15029 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:25:05,940 log 15029 6199930880 Not Found: /login/
+WARNING 2026-05-09 13:25:06,531 log 15029 6199930880 Not Found: /login/
+WARNING 2026-05-09 13:25:06,760 log 15029 6199930880 Not Found: /login/
+WARNING 2026-05-09 13:25:06,958 log 15029 6199930880 Not Found: /login/
+WARNING 2026-05-09 13:25:07,143 log 15029 6199930880 Not Found: /login/
+INFO 2026-05-09 13:27:54,795 autoreload 15029 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/settings.py changed, reloading.
+INFO 2026-05-09 13:27:55,086 autoreload 15052 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:28:16,632 autoreload 15052 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/urls.py changed, reloading.
+INFO 2026-05-09 13:28:16,833 autoreload 15069 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:28:32,210 autoreload 15069 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/users/urls.py changed, reloading.
+INFO 2026-05-09 13:28:32,473 autoreload 15092 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:30:07,817 autoreload 15092 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/users/views.py changed, reloading.
+INFO 2026-05-09 13:30:07,992 autoreload 15106 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-09 13:30:25,557 log 15106 6124056576 Internal Server Error: /login/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/urls/base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/debug_toolbar/middleware.py", line 74, in __call__
+    rendered = toolbar.render_toolbar()
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/debug_toolbar/toolbar.py", line 82, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/test/utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/urls/base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+INFO 2026-05-09 13:32:14,026 autoreload 15106 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/settings.py changed, reloading.
+INFO 2026-05-09 13:32:14,224 autoreload 15140 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:33:15,108 autoreload 15168 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:33:21,351 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:23,832 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:24,480 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:24,673 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:24,945 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:25,124 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:25,308 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:25,491 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:25,692 log 15168 6170275840 Not Found: /login/
+WARNING 2026-05-09 13:33:25,859 log 15168 6170275840 Not Found: /login/
+INFO 2026-05-09 13:34:49,499 autoreload 15168 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/urls.py changed, reloading.
+INFO 2026-05-09 13:34:49,767 autoreload 15188 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 13:35:07,246 autoreload 15188 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/users/urls.py changed, reloading.
+INFO 2026-05-09 13:35:07,404 autoreload 15197 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:35:14,923 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:15,696 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:15,947 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:16,124 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:16,308 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:16,473 log 15197 6168850432 Not Found: /login/
+WARNING 2026-05-09 13:35:16,658 log 15197 6168850432 Not Found: /login/
+INFO 2026-05-09 13:36:30,417 autoreload 15197 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/conf/settings.py changed, reloading.
+INFO 2026-05-09 13:36:30,598 autoreload 15214 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 13:36:38,009 log 15214 6198685696 Not Found: /login/
+WARNING 2026-05-09 13:36:38,632 log 15214 6198685696 Not Found: /login/
+WARNING 2026-05-09 13:36:38,822 log 15214 6198685696 Not Found: /login/
+WARNING 2026-05-09 13:36:39,026 log 15214 6198685696 Not Found: /login/
+WARNING 2026-05-09 13:36:39,207 log 15214 6198685696 Not Found: /login/
+WARNING 2026-05-09 13:37:10,958 log 15214 6265991168 Not Found: /favicon.ico

@@ -1,18 +1,11 @@
-import os
 from pathlib import Path
 from decouple import config
-from django.utils.translation import gettext_lazy as _
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 DJANGO_APPS = [
@@ -71,6 +64,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'conf.wsgi.application'
 
 # Database
@@ -83,33 +78,11 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
-## Login/Logout settings
-LOGIN_URL = '/users/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/users/login/'
-
-
-# # Xatolik sahifalari
-# handler403 = 'bosh_kiyim_sistemi.apps.users.views.handler403'
-# handler404 = 'bosh_kiyim_sistemi.apps.users.views.handler404'
-# handler500 = 'bosh_kiyim_sistemi.apps.users.views.handler500'
-#
-# # CSRF xatoligi uchun
-# CSRF_FAILURE_VIEW = 'bosh_kiyim_sistemi.apps.users.views.csrf_failure'
 
 # Internationalization
 LANGUAGE_CODE = config('LANGUAGE_CODE', default='uz')
@@ -117,7 +90,7 @@ TIME_ZONE = config('TIME_ZONE', default='Asia/Tashkent')
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -133,15 +106,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 AUTH_USER_MODEL = 'users.User'
 
-# Login URLs
-LOGIN_URL = '/login/'
+
+LOGIN_URL = '/users/login/'   # MUHIM: /users/ prefixi bilan
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/users/login/'
+
 
 # Debug toolbar
 INTERNAL_IPS = ['127.0.0.1']
 
-# Logging configuration
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -150,10 +124,7 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
+        'simple': {'format': '{levelname} {message}', 'style': '{'},
     },
     'handlers': {
         'file': {
@@ -162,14 +133,7 @@ LOGGING = {
             'filename': BASE_DIR / 'logs/django.log',
             'formatter': 'verbose',
         },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
+        'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'simple'},
     },
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'INFO',
-    },
+    'root': {'handlers': ['console', 'file'], 'level': 'INFO'},
 }
