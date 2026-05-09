@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Ip harakatlari{% endblock %}
+{% block page_title %}Ip harakatlari tarixi{% endblock %}
+{% block page_icon %}history{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="thread" class="form-label">Ip turi</label>
+                <select name="thread" id="thread" class="form-select">
+                    <option value="">-- Barcha iplar --</option>
+                    {% for thread in threads %}
+                    <option value="{{ thread.id }}" {% if selected_thread|stringformat:"s" == thread.id|stringformat:"s" %}selected{% endif %}>
+                        {{ thread.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="type" class="form-label">Harakat turi</label>
+                <select name="type" id="type" class="form-select">
+                    <option value="">-- Barcha turlar --</option>
+                    {% for value, label in transaction_types %}
+                    <option value="{{ value }}" {% if selected_type == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter"></i> Filtr
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Jami {{ transactions|length }} ta harakat</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sana</th>
+                        <th>Ip nomi</th>
+                        <th>Harakat turi</th>
+                        <th>Miqdor (kg)</th>
+                        <th>Tegishli usta</th>
+                        <th>Izoh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.created_at|date:"Y-m-d H:i" }}</a></td>
+                        <td>{{ transaction.thread.name }}</a></td>
+                        <td>
+                            {% if transaction.transaction_type == 'incoming' %}
+                                <span class="badge bg-success">Kirim</span>
+                            {% elif transaction.transaction_type == 'outgoing' %}
+                                <span class="badge bg-danger">Chiqim (ustaga)</span>
+                            {% elif transaction.transaction_type == 'return' %}
+                                <span class="badge bg-info">Qaytarilgan</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Hisobdan chiqarish</span>
+                            {% endif %}
+                        </a></td>
+                        <td>{{ transaction.quantity|floatformat:2 }} kg</a></td>
+                        <td>
+                            {% if transaction.related_master %}
+                                <a href="{% url 'orders:master_detail' transaction.related_master.id %}">
+                                    <i class="fas fa-user"></i> {{ transaction.related_master.get_full_name|default:transaction.related_master.username }}
+                                </a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </a></td>
+                        <td>{{ transaction.note|truncatechars:50|default:"-" }}</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-inbox fa-2x text-muted mb-2 d-block"></i>
+                            Hech qanday harakat mavjud emas
+                        </a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

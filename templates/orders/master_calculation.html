@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Usta hisob-kitobi{% endblock %}
+{% block page_title %}{{ master.get_full_name|default:master.username }} - Hisob-kitob{% endblock %}
+{% block page_icon %}calculator{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6><i class="fas fa-thread"></i> To'qish haqqi</h6>
+                <h3>{{ total_weaving|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6><i class="fas fa-gem"></i> Bezak haqqi</h6>
+                <h3>{{ total_decoration|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6><i class="fas fa-money-bill"></i> Jami to'lov</h6>
+                <h3>{{ total_payment|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Mahsulotlar bo'yicha xulosa</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mahsulot</th>
+                        <th>Miqdor (dona)</th>
+                        <th>To'qish haqqi</th>
+                        <th>Bezak haqqi</th>
+                        <th>Jami</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in product_summary %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }} dona</td>
+                        <td>{{ item.weaving|floatformat:0 }} so'm</td>
+                        <td>{{ item.decoration|floatformat:0 }} so'm</td>
+                        <td class="fw-bold">{{ item.total|floatformat:0 }} so'm</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Mahsulotlar mavjud emas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-secondary">
+                    <tr>
+                        <th>Jami:</th>
+                        <th>{{ balance.total_product_given }} dona</th>
+                        <th>{{ total_weaving|floatformat:0 }} so'm</th>
+                        <th>{{ total_decoration|floatformat:0 }} so'm</th>
+                        <th>{{ total_payment|floatformat:0 }} so'm</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> Barcha qabul qilingan mahsulotlar</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sana</th>
+                        <th>Mahsulot</th>
+                        <th>Miqdor</th>
+                        <th>Og'irlik (kg)</th>
+                        <th>To'qish</th>
+                        <th>Bezak</th>
+                        <th>Jami</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in receipts %}
+                    <tr>
+                        <td>{{ receipt.receipt_date|date:"Y-m-d" }}</td>
+                        <td>{{ receipt.product.name }}</td>
+                        <td>{{ receipt.quantity_received }} dona</td>
+                        <td>{{ receipt.total_weight|floatformat:2 }}</td>
+                        <td>{{ receipt.weaving_total|floatformat:0 }} so'm</td>
+                        <td>{{ receipt.decoration_total|floatformat:0 }} so'm</td>
+                        <td>{{ receipt.total_payment|floatformat:0 }} so'm</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">Mahsulotlar mavjud emas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a href="{% url 'orders:master_detail' master.id %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Orqaga
+    </a>
+    <button onclick="window.print()" class="btn btn-primary">
+        <i class="fas fa-print"></i> Chop etish
+    </button>
+</div>
+
+<style>
+    @media print {
+        .sidebar, .navbar, .btn, .footer {
+            display: none !important;
+        }
+        .main-content {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .card {
+            break-inside: avoid;
+        }
+    }
+</style>
+{% endblock %}

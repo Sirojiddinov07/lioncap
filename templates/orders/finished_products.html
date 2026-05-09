@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Tayyor mahsulotlar{% endblock %}
+{% block page_title %}Tayyor mahsulotlar ombori{% endblock %}
+{% block page_icon %}boxes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-check-circle"></i> Yaroqli mahsulotlar</h6>
+                <h2 class="mb-0">{{ total_good }} dona</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-times-circle"></i> Yaroqsiz mahsulotlar</h6>
+                <h2 class="mb-0">{{ total_defective }} dona</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-line"></i> Jami mahsulot</h6>
+                <h2 class="mb-0">{{ total_good|add:total_defective }} dona</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Mahsulotlar bo'yicha xulosa</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mahsulot</th>
+                        <th>Yaroqli (dona)</th>
+                        <th>Yaroqli og'irlik (kg)</th>
+                        <th>Yaroqsiz (dona)</th>
+                        <th>Yaroqsiz og'irlik (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in product_summary %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.good_quantity }} dona</td>
+                        <td>{{ item.good_weight|floatformat:2 }} kg</td>
+                        <td>{{ item.defective_quantity }} dona</td>
+                        <td>{{ item.defective_weight|floatformat:2 }} kg</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Mahsulotlar mavjud emas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Oxirgi qabul qilingan mahsulotlar</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Sana</th>
+                        <th>Usta</th>
+                        <th>Mahsulot</th>
+                        <th>Miqdor (dona)</th>
+                        <th>Og'irlik (kg)</th>
+                        <th>Sifat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in receipts %}
+                    <tr>
+                        <td>{{ receipt.receipt_date|date:"Y-m-d" }}</td>
+                        <td>{{ receipt.material_issue.master.get_full_name|default:receipt.material_issue.master.username }}</td>
+                        <td>{{ receipt.product.name }}</td>
+                        <td>{{ receipt.quantity_received }} dona</td>
+                        <td>{{ receipt.total_weight|floatformat:2 }} kg</td>
+                        <td>
+                            {% if receipt.quality_status == 'good' %}
+                                <span class="badge bg-success">Yaroqli</span>
+                            {% else %}
+                                <span class="badge bg-danger">Yaroqsiz</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <td><td colspan="6" class="text-center">Mahsulotlar mavjud emas</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Ipga qarz qo'shish{% endblock %}
+{% block page_title %}Ipga qarz qo'shish{% endblock %}
+{% block page_icon %}hand-holding-usd{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h4 class="mb-0"><i class="fas fa-hand-holding-usd"></i> Ipga qarz qo'shish</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'threads:add_credit_only' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="thread" class="form-label">Ip turi *</label>
+                        <select name="thread" id="thread" class="form-select" required>
+                            <option value="">-- Tanlang --</option>
+                            {% for thread in threads %}
+                            <option value="{{ thread.id }}">
+                                {{ thread.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Miqdori (kg) *</label>
+                        <input type="number" name="quantity" id="quantity" step="0.001" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Qarz summasi (USD) *</label>
+                        <input type="number" name="amount" id="amount" step="0.01" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Izoh</label>
+                        <textarea name="note" id="note" class="form-control" rows="2" placeholder="Yetkazib beruvchi nomi, sana, sabab..."></textarea>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Eslatma:</strong> Bu yerda ip omborga qo'shilmaydi, faqat qarz yozuvi yaratiladi (eski qarzlar yoki qarzga olingan iplar uchun).
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">Qarz qo'shish</button>
+                    <a href="{% url 'threads:supplier_debts' %}" class="btn btn-secondary">Bekor qilish</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+<nav class="navbar navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'orders:dashboard' %}">
+            <i class="fas fa-hat-wizard"></i> Bosh Kiyim Sistemi
+        </a>
+        <div class="d-flex">
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i> {{ user.get_full_name|default:user.username }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'users:profile' %}">
+                            <i class="fas fa-id-card"></i> Profil
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'users:logout' %}">
+                            <i class="fas fa-sign-out-alt"></i> Chiqish
+                        </a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

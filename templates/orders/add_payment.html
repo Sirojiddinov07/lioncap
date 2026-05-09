@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}To'lov qo'shish{% endblock %}
+{% block page_title %}{{ master.get_full_name|default:master.username }} - To'lov{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4><i class="fas fa-money-bill"></i> To'lov qo'shish</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Ustaning afzal valyutasi:</strong>
+                    {% if preferred_currency == 'usd' %}Dollar (USD){% else %}So'm (UZS){% endif %}<br>
+                    <strong>Jami qarz (so'm):</strong> {{ payment_balance_uzs|floatformat:0 }} so'm<br>
+                    <strong>Jami qarz (dollar):</strong> {{ payment_balance_usd|floatformat:2 }} USD
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">To'lov miqdori *</label>
+                        <div class="input-group">
+                            <input type="number" name="amount" id="amount" step="0.01" class="form-control" required>
+                            <select name="currency" id="currency" class="form-select" style="width: 100px;">
+                                <option value="uzs" {% if preferred_currency == 'uzs' %}selected{% endif %}>So'm</option>
+                                <option value="usd" {% if preferred_currency == 'usd' %}selected{% endif %}>USD</option>
+                            </select>
+                        </div>
+                        <div class="form-text" id="maxAmount"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Izoh</label>
+                        <textarea name="note" id="note" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Saqlash</button>
+                    <a href="{% url 'orders:master_detail' master.id %}" class="btn btn-secondary w-100 mt-2">Bekor qilish</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const currencySelect = document.getElementById('currency');
+    const amountInput = document.getElementById('amount');
+    const maxAmountSpan = document.getElementById('maxAmount');
+
+    const balanceUzs = {{ payment_balance_uzs|default:0 }};
+    const balanceUsd = {{ payment_balance_usd|default:0 }};
+
+    function updateMaxAmount() {
+        const currency = currencySelect.value;
+        if (currency === 'usd') {
+            amountInput.max = balanceUsd;
+            maxAmountSpan.textContent = `Maksimal: ${balanceUsd.toFixed(2)} USD`;
+        } else {
+            amountInput.max = balanceUzs;
+            maxAmountSpan.textContent = `Maksimal: ${balanceUzs.toFixed(0)} so'm`;
+        }
+    }
+
+    currencySelect.addEventListener('change', updateMaxAmount);
+    updateMaxAmount();
+</script>
+{% endblock %}

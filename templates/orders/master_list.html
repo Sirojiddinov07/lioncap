@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustalar{% endblock %}
+{% block page_title %}Ustalar ro'yxati{% endblock %}
+{% block page_icon %}users{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Usta</th>
+                        <th>Telefon</th>
+                        <th>Valyuta</th>
+                        <th>Topshirilgan</th>
+                        <th>Mahsulot qarzi</th>
+                        <th>To'lov qarzi</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in masters_data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</a></td>
+                        <td>{{ data.master.get_full_name|default:data.master.username }}</a></td>
+                        <td>{{ data.master.phone|default:"-" }}</a></td>
+                        <td>
+                            {% if data.master.preferred_currency == 'usd' %}
+                                <span class="badge bg-info">USD</span>
+                            {% else %}
+                                <span class="badge bg-success">UZS</span>
+                            {% endif %}
+                        </a></td>
+                        <td>{{ data.balance.total_product_given }} dona</a></td>
+                        <td class="{% if data.product_debt > 0 %}text-danger{% endif %}">{{ data.product_debt }} dona</a></td>
+                        <td class="{% if data.payment_balance > 0 %}text-danger{% endif %}">{{ data.payment_balance_display }}</a></td>
+                        <td>
+                            <a href="{% url 'orders:master_detail' data.master.id %}" class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{% url 'orders:add_payment' data.master.id %}" class="btn btn-sm btn-success">
+                                <i class="fas fa-money-bill"></i>
+                            </a>
+                        </a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" class="text-center">Ustalar mavjud emas</a></td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

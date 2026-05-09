@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustalar hisoboti{% endblock %}
+{% block page_title %}Ustalar hisoboti{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Usta</th>
+                        <th>Olingan ip (kg)</th>
+                        <th>Yaroqli (dona/kg)</th>
+                        <th>Yaroqsiz (dona/kg)</th>
+                        <th>Qarzi (dona)</th>
+                        <th>Samaradorlik</th>
+                        <th>Brak foizi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in masters_data %}
+                    <tr>
+                        <td>{{ data.master.get_full_name|default:data.master.username }}</td>
+                        <td>{{ data.total_thread_taken|floatformat:2 }}</td>
+                        <td>{{ data.total_good_quantity }} / {{ data.total_good_weight|floatformat:2 }}</td>
+                        <td class="text-danger">{{ data.total_defective_quantity }} / {{ data.total_defective_weight|floatformat:2 }}</td>
+                        <td class="{% if data.product_debt > 0 %}text-danger fw-bold{% endif %}">{{ data.product_debt }}</td>
+                        <td>{% if data.efficiency > 0 %}{{ data.efficiency|floatformat:1 }}%{% else %}-{% endif %}</td>
+                        <td>{% if data.defect_rate > 0 %}{{ data.defect_rate|floatformat:1 }}%{% else %}0%{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-secondary">
+                    <tr>
+                        <th>Jami:</th>
+                        <th></th>
+                        <th>{{ total_good_quantity }} dona / {{ total_good_weight|floatformat:2 }} kg</th>
+                        <th>{{ total_defective_quantity }} dona / {{ total_defective_weight|floatformat:2 }} kg</th>
+                        <th></th><th></th><th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

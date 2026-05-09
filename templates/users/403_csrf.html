@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Xavfsizlik xatosi - 403{% endblock %}
+{% block page_title %}Xavfsizlik xatosi{% endblock %}
+{% block page_icon %}shield-alt{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-header bg-warning text-white">
+                <h4 class="mb-0"><i class="fas fa-shield-alt"></i> 403 - Xavfsizlik xatosi</h4>
+            </div>
+            <div class="card-body py-5">
+                <i class="fas fa-exclamation-circle fa-4x text-warning mb-3"></i>
+                <h3 class="mb-3">CSRF tokeni noto'g'ri yoki yo'q!</h3>
+                <p class="text-muted mb-4">
+                    So'rov xavfsizlik tekshiruvidan o'ta olmadi.<br>
+                    Iltimos, sahifani yangilab, qaytadan urinib ko'ring.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="javascript:location.reload()" class="btn btn-warning">
+                        <i class="fas fa-sync-alt"></i> Sahifani yangilash
+                    </a>
+                    <a href="{% url 'orders:dashboard' %}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Bosh sahifaga qaytish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

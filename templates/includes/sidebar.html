@@ -1,0 +1,42 @@
+<div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'orders:dashboard' %}">
+                    <i class="fas fa-tachometer-alt"></i> Boshqaruv paneli
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'orders:master_list' %}">
+                    <i class="fas fa-users"></i> Ustalar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'orders:issue_list' %}">
+                    <i class="fas fa-list"></i> Ip berishlar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'orders:finished_products' %}">
+                    <i class="fas fa-boxes"></i> Tayyor mahsulotlar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#warehouseMenu">
+                    <i class="fas fa-warehouse"></i> Ombor <i class="fas fa-chevron-down float-end"></i>
+                </a>
+                <div class="collapse" id="warehouseMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li><a class="nav-link" href="{% url 'threads:list' %}">Iplar ombori</a></li>
+                        <li><a class="nav-link" href="{% url 'threads:transactions' %}">Ip harakatlari</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'reports:main' %}">
+                    <i class="fas fa-chart-bar"></i> Hisobotlar
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

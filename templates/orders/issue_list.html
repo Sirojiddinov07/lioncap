@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Ip berishlar{% endblock %}
+{% block page_title %}Ip berishlar ro'yxati{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="status" class="form-label">Holati</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Faol</option>
+                    <option value="closed" {% if status_filter == 'closed' %}selected{% endif %}>Yopilgan</option>
+                    <option value="" {% if status_filter != 'active' and status_filter != 'closed' %}selected{% endif %}>Barchasi</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="master" class="form-label">Usta</label>
+                <select name="master" id="master" class="form-select">
+                    <option value="">-- Barcha ustalar --</option>
+                    {% for master in masters %}
+                    <option value="{{ master.id }}" {% if selected_master|stringformat:"s" == master.id|stringformat:"s" %}selected{% endif %}>
+                        {{ master.get_full_name|default:master.username }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100 me-2">
+                    <i class="fas fa-filter"></i> Filtr
+                </button>
+                <a href="{% url 'orders:issue_create' %}" class="btn btn-success w-100">
+                    <i class="fas fa-plus"></i> Yangi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sana</th>
+                        <th>Usta</th>
+                        <th>Ip</th>
+                        <th>Berilgan (kg)</th>
+                        <th>Kutilayotgan mahsulot</th>
+                        <th>Kutilgan (dona)</th>
+                        <th>Qabul qilingan (dona)</th>
+                        <th>Qolgan qarz</th>
+                        <th>Holati</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in issues %}
+                    <tr class="{% if not issue.is_closed %}table-warning{% endif %}">
+                        <td>{{ issue.issue_date|date:"Y-m-d" }}</td>
+                        <td>
+                            <a href="{% url 'orders:master_detail' issue.master.id %}">
+                                {{ issue.master.get_full_name|default:issue.master.username }}
+                            </a>
+                        </td>
+                        <td>{{ issue.thread.name }}</td>
+                        <td>{{ issue.quantity|floatformat:2 }} kg</td>
+                        <td>{{ issue.expected_product.name }}</td>
+                        <td>{{ issue.expected_quantity }} dona</td>
+                        <td>
+                            {% with good_count=issue.total_received_good_quantity %}
+                                {{ good_count }} dona
+                            {% endwith %}
+                        </td>
+                        <td class="{% if issue.current_balance_quantity > 0 %}text-danger fw-bold{% endif %}">
+                            {{ issue.current_balance_quantity }} dona
+                        </td>
+                        <td>
+                            {% if issue.is_closed %}
+                                <span class="badge bg-success">Yopilgan</span>
+                            {% else %}
+                                <span class="badge bg-warning">Faol</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not issue.is_closed %}
+                                <a href="{% url 'orders:receipt_create' issue.id %}" class="btn btn-sm btn-success">
+                                    <i class="fas fa-box-check"></i> Qabul
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center py-4">
+                            <i class="fas fa-inbox fa-2x text-muted mb-2 d-block"></i>
+                            Hech qanday ip berish mavjud emas
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

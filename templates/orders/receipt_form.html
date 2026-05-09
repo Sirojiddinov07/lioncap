@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+
+{% block title %}Mahsulot qabul qilish{% endblock %}
+{% block page_title %}Mahsulot qabul qilish{% endblock %}
+{% block page_icon %}box-check{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-box-check"></i> Mahsulot qabul qilish</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-user"></i> Usta:</strong>
+                            {{ material_issue.master.get_full_name|default:material_issue.master.username }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-money-bill"></i> Valyuta:</strong>
+                            {% if material_issue.master.preferred_currency == 'usd' %}
+                                <span class="badge bg-info">Dollar (USD)</span>
+                            {% else %}
+                                <span class="badge bg-success">So'm (UZS)</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-box"></i> Mahsulot:</strong>
+                            {{ material_issue.expected_product.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-chart-line"></i> Kutilayotgan:</strong>
+                            {{ material_issue.expected_quantity }} dona
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-check-circle"></i> Qabul qilingan:</strong>
+                            {{ material_issue.total_received_good_quantity }} dona
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-exclamation-triangle text-danger"></i> Qolgan qarz:</strong>
+                            <span class="text-danger fw-bold">{{ current_balance }} dona</span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-weight-hanging"></i> Berilgan ip:</strong>
+                            {{ given_weight|floatformat:2 }} kg
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <form method="post" id="receiptForm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="product" class="form-label">Mahsulot turi *</label>
+                        <select name="product" id="product" class="form-select" required>
+                            <option value="">-- Mahsulot tanlang --</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}"
+                                    data-standard-weight="{{ product.standard_weight }}"
+                                    data-price-uzs="{{ product.weaving_price_uzs }}"
+                                    data-price-usd="{{ product.weaving_price_usd }}">
+                                {{ product.name }}
+                                (standart: {{ product.standard_weight|floatformat:3 }} kg/dona,
+                                so'm: {{ product.weaving_price_uzs|floatformat:0 }},
+                                dollar: {{ product.weaving_price_usd|floatformat:2 }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Qabul qilingan miqdor (dona) *</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control"
+                               min="1" step="1" required>
+                        <div class="form-text">Maksimal: {{ current_balance }} dona (yaroqli mahsulot uchun)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="total_weight" class="form-label">Umumiy og'irlik (kg) *</label>
+                        <input type="number" name="total_weight" id="total_weight" step="0.001" class="form-control" required>
+                        <div class="form-text">Barcha mahsulotlarning umumiy og'irligini kiriting (kg). Maksimal: {{ given_weight|floatformat:2 }} kg</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quality_status" class="form-label">Sifat holati *</label>
+                        <select name="quality_status" id="quality_status" class="form-select" required>
+                            {% for value, label in quality_statuses %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div id="defect_fields" style="display: none;">
+                        <div class="mb-3">
+                            <label for="defect_reason" class="form-label">Brak sababi</label>
+                            <select name="defect_reason" id="defect_reason" class="form-select">
+                                <option value="">-- Sababni tanlang --</option>
+                                {% for value, label in defect_reasons %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="defect_description" class="form-label">Brak tavsifi</label>
+                            <textarea name="defect_description" id="defect_description" class="form-control" rows="3"
+                                      placeholder="Brak haqida batafsil ma'lumot..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" id="weightInfo" style="display: none;">
+                        <strong><i class="fas fa-calculator"></i> Hisoblangan ma'lumotlar:</strong><br>
+                        <div class="row mt-2">
+                            <div class="col-5">1 dona og'irligi:</div>
+                            <div class="col-7"><strong><span id="perItemWeight">0</span> kg</strong></div>
+                            <div class="col-5">Jami og'irlik:</div>
+                            <div class="col-7"><span id="totalWeightDisplay">0</span> kg</div>
+                            <div class="col-5">Kutilgan og'irlik:</div>
+                            <div class="col-7"><span id="expectedWeightDisplay">0</span> kg</div>
+                            <div class="col-5">To'lov (so'm):</div>
+                            <div class="col-7"><strong class="text-success"><span id="paymentUzs">0</span> so'm</strong></div>
+                            <div class="col-5">To'lov (dollar):</div>
+                            <div class="col-7"><strong class="text-info"><span id="paymentUsd">0</span> USD</strong></div>
+                        </div>
+                        <div id="weightWarning" style="display: none;" class="mt-2 text-warning">
+                            ⚠️ Ogohlantirish: Haqiqiy og'irlik standartdan 20% dan ko'proq farq qilmoqda!
+                        </div>
+                        <div id="weightError" style="display: none;" class="mt-2 text-danger">
+                            ❌ Umumiy og'irlik berilgan ip miqdoridan katta!
+                        </div>
+                    </div>
+
+                    <div class="alert alert-secondary" id="paymentInfo" style="display: none;">
+                        <strong><i class="fas fa-money-bill"></i> To'lov ma'lumoti:</strong><br>
+                        <div class="row mt-2">
+                            <div class="col-6">Ustaning valyutasi:</div>
+                            <div class="col-6">
+                                {% if material_issue.master.preferred_currency == 'usd' %}
+                                    <span class="badge bg-info">USD</span>
+                                {% else %}
+                                    <span class="badge bg-success">UZS</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">To'lanadigan summa:</div>
+                            <div class="col-6">
+                                <strong id="finalPayment">0</strong>
+                                <span id="finalCurrency">
+                                    {% if material_issue.master.preferred_currency == 'usd' %}USD{% else %}so'm{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Izoh</label>
+                        <textarea name="note" id="note" class="form-control" rows="2"
+                                  placeholder="Qo'shimcha ma'lumot..."></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Qabul qilish
+                        </button>
+                        <a href="{% url 'orders:master_detail' material_issue.master.id %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Bekor qilish
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM elementlari
+    const qualityStatus = document.getElementById('quality_status');
+    const defectFields = document.getElementById('defect_fields');
+    const productSelect = document.getElementById('product');
+    const quantityInput = document.getElementById('quantity');
+    const totalWeightInput = document.getElementById('total_weight');
+    const perItemWeightSpan = document.getElementById('perItemWeight');
+    const totalWeightDisplaySpan = document.getElementById('totalWeightDisplay');
+    const expectedWeightDisplaySpan = document.getElementById('expectedWeightDisplay');
+    const paymentUzsSpan = document.getElementById('paymentUzs');
+    const paymentUsdSpan = document.getElementById('paymentUsd');
+    const finalPaymentSpan = document.getElementById('finalPayment');
+    const weightInfo = document.getElementById('weightInfo');
+    const paymentInfo = document.getElementById('paymentInfo');
+    const weightWarning = document.getElementById('weightWarning');
+    const weightError = document.getElementById('weightError');
+
+    const maxQuantity = {{ current_balance }};
+    const givenWeight = {{ given_weight|default:0 }};
+    const masterCurrency = "{{ material_issue.master.preferred_currency }}";
+
+    let currentStandardWeight = 0;
+    let currentPriceUzs = 0;
+    let currentPriceUsd = 0;
+
+    // Sifat holatiga qarab brak maydonlarini ko'rsatish/yashirish
+    qualityStatus.addEventListener('change', function() {
+        if (this.value === 'defective' || this.value === 'repairable') {
+            defectFields.style.display = 'block';
+            quantityInput.max = '';
+            paymentInfo.style.display = 'none';
+        } else {
+            defectFields.style.display = 'none';
+            quantityInput.max = maxQuantity;
+            document.getElementById('defect_reason').value = '';
+            document.getElementById('defect_description').value = '';
+            calculatePerItemWeight();
+        }
+    });
+
+    // Miqdor va umumiy og'irlik asosida 1 dona og'irligini hisoblash
+    function calculatePerItemWeight() {
+        let quantity = parseFloat(quantityInput.value) || 0;
+        let totalWeight = parseFloat(totalWeightInput.value) || 0;
+        let quality = qualityStatus.value;
+
+        if (quantity > 0 && totalWeight > 0) {
+            let perItem = totalWeight / quantity;
+            perItemWeightSpan.textContent = perItem.toFixed(4);
+            totalWeightDisplaySpan.textContent = totalWeight.toFixed(3);
+
+            // Kutilgan og'irlikni hisoblash (standart bo'yicha)
+            let expectedWeight = quantity * currentStandardWeight;
+            expectedWeightDisplaySpan.textContent = expectedWeight.toFixed(3);
+
+            // To'lovni hisoblash (faqat yaroqli mahsulot uchun)
+            if (quality === 'good') {
+                let paymentUzs = currentPriceUzs * quantity;
+                let paymentUsd = currentPriceUsd * quantity;
+                paymentUzsSpan.textContent = paymentUzs.toLocaleString('uz-UZ');
+                paymentUsdSpan.textContent = paymentUsd.toFixed(2);
+
+                // Ustaning valyutasida to'lov
+                if (masterCurrency === 'usd') {
+                    finalPaymentSpan.textContent = paymentUsd.toFixed(2);
+                } else {
+                    finalPaymentSpan.textContent = paymentUzs.toLocaleString('uz-UZ');
+                }
+                paymentInfo.style.display = 'block';
+            } else {
+                paymentInfo.style.display = 'none';
+            }
+
+            weightInfo.style.display = 'block';
+
+            // Umumiy og'irlik berilgan ipdan katta bo'lsa
+            if (totalWeight > givenWeight) {
+                weightError.style.display = 'block';
+                weightWarning.style.display = 'none';
+            } else {
+                weightError.style.display = 'none';
+
+                // Standart og'irlik bilan solishtirish
+                if (currentStandardWeight > 0) {
+                    let diffPercent = Math.abs((perItem - currentStandardWeight) / currentStandardWeight * 100);
+                    if (diffPercent > 20) {
+                        weightWarning.style.display = 'block';
+                    } else {
+                        weightWarning.style.display = 'none';
+                    }
+                }
+            }
+        } else {
+            weightInfo.style.display = 'none';
+            paymentInfo.style.display = 'none';
+        }
+    }
+
+    // Mahsulot tanlanganda standart og'irlik va narxlarni olish
+    productSelect.addEventListener('change', function() {
+        let selected = this.options[this.selectedIndex];
+        let standardWeight = selected.getAttribute('data-standard-weight');
+        let priceUzs = selected.getAttribute('data-price-uzs');
+        let priceUsd = selected.getAttribute('data-price-usd');
+
+        currentStandardWeight = standardWeight ? parseFloat(standardWeight) : 0;
+        currentPriceUzs = priceUzs ? parseFloat(priceUzs) : 0;
+        currentPriceUsd = priceUsd ? parseFloat(priceUsd) : 0;
+
+        calculatePerItemWeight();
+    });
+
+    // Miqdor o'zgarganda
+    quantityInput.addEventListener('input', function() {
+        let value = parseInt(this.value);
+        let quality = qualityStatus.value;
+
+        if (quality === 'good') {
+            if (value > maxQuantity) {
+                this.value = maxQuantity;
+                alert(`Yaroqli mahsulot miqdori qarz miqdoridan (${maxQuantity} dona) katta bo'lishi mumkin emas!`);
+            }
+        }
+
+        if (isNaN(value) || value < 0) {
+            this.value = '';
+        }
+
+        calculatePerItemWeight();
+    });
+
+    // Umumiy og'irlik o'zgarganda
+    totalWeightInput.addEventListener('input', function() {
+        let value = parseFloat(this.value);
+
+        // Maksimal og'irlik cheklovi
+        if (value > givenWeight) {
+            this.value = givenWeight;
+            alert(`Umumiy og'irlik berilgan ip miqdoridan (${givenWeight.toFixed(3)} kg) katta bo'lishi mumkin emas!`);
+        }
+
+        if (isNaN(value) || value < 0) {
+            this.value = '';
+        }
+        calculatePerItemWeight();
+    });
+
+    // Form yuborishdan oldin validatsiya
+    document.getElementById('receiptForm').addEventListener('submit', function(e) {
+        let quantity = parseInt(quantityInput.value) || 0;
+        let quality = qualityStatus.value;
+        let totalWeight = parseFloat(totalWeightInput.value) || 0;
+
+        // Yaroqli mahsulot uchun miqdor cheklovi
+        if (quality === 'good') {
+            if (quantity > maxQuantity) {
+                e.preventDefault();
+                alert(`Yaroqli mahsulot miqdori (${quantity} dona) qarz miqdoridan (${maxQuantity} dona) katta!`);
+                return false;
+            }
+        }
+
+        if (quantity <= 0) {
+            e.preventDefault();
+            alert('Iltimos, qabul qilingan miqdorni kiriting!');
+            return false;
+        }
+
+        if (totalWeight <= 0) {
+            e.preventDefault();
+            alert('Iltimos, umumiy og\'irlikni kiriting!');
+            return false;
+        }
+
+        if (totalWeight > givenWeight) {
+            e.preventDefault();
+            alert(`Umumiy og'irlik (${totalWeight.toFixed(3)} kg) berilgan ip miqdoridan (${givenWeight.toFixed(3)} kg) katta!`);
+            return false;
+        }
+
+        return true;
+    });
+
+    // Brak sababi tanlanmagan bo'lsa ogohlantirish
+    document.getElementById('receiptForm').addEventListener('submit', function(e) {
+        let quality = qualityStatus.value;
+        let defectReason = document.getElementById('defect_reason').value;
+
+        if ((quality === 'defective' || quality === 'repairable') && !defectReason) {
+            if (!confirm('Brak sababi tanlanmagan. Davom etmoqchimisiz?')) {
+                e.preventDefault();
+                return false;
+            }
+        }
+        return true;
+    });
+
+    // Sahifa yuklanganda
+    document.addEventListener('DOMContentLoaded', function() {
+        if (productSelect.value) {
+            let selected = productSelect.options[productSelect.selectedIndex];
+            let standardWeight = selected.getAttribute('data-standard-weight');
+            let priceUzs = selected.getAttribute('data-price-uzs');
+            let priceUsd = selected.getAttribute('data-price-usd');
+
+            currentStandardWeight = standardWeight ? parseFloat(standardWeight) : 0;
+            currentPriceUzs = priceUzs ? parseFloat(priceUzs) : 0;
+            currentPriceUsd = priceUsd ? parseFloat(priceUsd) : 0;
+        }
+
+        // Og'irlik inputiga max attribute qo'shish
+        totalWeightInput.max = givenWeight;
+    });
+</script>
+{% endblock %}

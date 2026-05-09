@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_icon %}box-open{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ title }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">Mahsulot nomi *</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.code.id_for_label }}" class="form-label">Kod</label>
+                        {{ form.code }}
+                        <div class="form-text">Ixtiyoriy</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.standard_weight.id_for_label }}" class="form-label">1 dona og'irligi (kg) *</label>
+                        {{ form.standard_weight }}
+                        <div class="form-text">Masalan: 0.200 kg</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.weaving_price_uzs.id_for_label }}" class="form-label">Narxi (so'm/dona) *</label>
+                                {{ form.weaving_price_uzs }}
+                                <div class="form-text">So'mda</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.weaving_price_usd.id_for_label }}" class="form-label">Narxi (dollar/dona)</label>
+                                {{ form.weaving_price_usd }}
+                                <div class="form-text">Dollarda</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.default_thread.id_for_label }}" class="form-label">Standart ip</label>
+                        {{ form.default_thread }}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="form-check-label">Faol</label>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Ma'lumot:</strong> Ustaning valyutasiga qarab to'lov shu narxda hisoblanadi.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                    <a href="{% url 'products:list' %}" class="btn btn-secondary">Bekor qilish</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

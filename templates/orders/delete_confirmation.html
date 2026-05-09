@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_icon %}trash{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> {{ title }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <p>Siz quyidagi mahsulotni o'chirmoqchisiz:</p>
+                    <ul>
+                        <li><strong>Usta:</strong> {{ receipt.material_issue.master.get_full_name|default:receipt.material_issue.master.username }}</li>
+                        <li><strong>Mahsulot:</strong> {{ receipt.product.name }}</li>
+                        <li><strong>Miqdor:</strong> {{ receipt.quantity_received }} dona</li>
+                        <li><strong>Og'irlik:</strong> {{ receipt.total_weight|floatformat:2 }} kg</li>
+                        <li><strong>Sifat:</strong> {{ receipt.get_quality_status_display }}</li>
+                        <li><strong>Sabab:</strong> {{ receipt.get_defect_reason_display|default:"-" }}</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>Diqqat!</strong> Bu amalni qaytarib bo'lmaydi!
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Ha, o'chirish
+                        </button>
+                        <a href="{% url 'orders:finished_products' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Bekor qilish
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

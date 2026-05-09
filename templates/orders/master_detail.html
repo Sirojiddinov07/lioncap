@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ master.get_full_name|default:master.username }}{% endblock %}
+{% block page_title %}{{ master.get_full_name|default:master.username }}{% endblock %}
+{% block page_icon %}user{% endblock %}
+
+{% block content %}
+<!-- Usta ma'lumotlari va tugmalar -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><i class="fas fa-phone"></i> Telefon:</strong> {{ master.phone|default:"-" }}</p>
+                        <p><strong><i class="fas fa-map-marker-alt"></i> Manzil:</strong> {{ master.address|default:"-" }}</p>
+                        <p><strong><i class="fas fa-passport"></i> Passport:</strong> {{ master.passport|default:"-" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="fas fa-money-bill"></i> Valyuta:</strong>
+                            {% if master.preferred_currency == 'usd' %}
+                                <span class="badge bg-info">Dollar (USD)</span>
+                            {% else %}
+                                <span class="badge bg-success">So'm (UZS)</span>
+                            {% endif %}
+                        </p>
+                        <p><strong><i class="fas fa-thread"></i> Olingan ip:</strong> {{ total_thread_taken|floatformat:2 }} kg</p>
+                        <p><strong><i class="fas fa-boxes"></i> Topshirilgan:</strong> {{ total_product_given }} dona</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'orders:issue_create' %}?master={{ master.id }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i> Ip berish
+                    </a>
+                    <a href="{% url 'orders:add_payment' master.id %}" class="btn btn-success">
+                        <i class="fas fa-money-bill"></i> To'lov qo'shish
+                    </a>
+                    <a href="{% url 'orders:master_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Orqaga
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistik kartalar -->
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-exclamation-triangle"></i> Mahsulot qarzi</h6>
+                <h2 class="mb-0">{{ product_debt }} dona</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-money-bill"></i> To'lanadigan</h6>
+                <h2 class="mb-0">{{ total_payment_due_display }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-check-circle"></i> To'langan</h6>
+                <h2 class="mb-0">{{ total_payment_paid_display }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-line"></i> Qolgan qarz</h6>
+                <h2 class="mb-0">{{ payment_balance_display }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Faol berilmalar -->
+<div class="card mt-3">
+    <div class="card-header bg-warning">
+        <h5 class="mb-0"><i class="fas fa-clock"></i> Faol berilmalar</h5>
+    </div>
+    <div class="card-body">
+        {% if active_issues %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sana</th>
+                        <th>Ip</th>
+                        <th>Berilgan</th>
+                        <th>Kutilayotgan</th>
+                        <th>Qabul qilingan</th>
+                        <th>Qolgan</th>
+                        <th>Amal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in active_issues %}
+                    <tr>
+                        <td>{{ issue.issue_date|date:"Y-m-d" }}</a></td>
+                        <td>{{ issue.thread.name }}</a></td>
+                        <td>{{ issue.quantity|floatformat:2 }} kg</a></td>
+                        <td>{{ issue.expected_quantity }} dona {{ issue.expected_product.name }}</a></td>
+                        <td>{{ issue.total_received_good_quantity }} dona</a></td>
+                        <td class="text-danger">{{ issue.current_balance_quantity }} dona</a></td>
+                        <td>
+                            <a href="{% url 'orders:receipt_create' issue.id %}" class="btn btn-sm btn-success">
+                                <i class="fas fa-box-check"></i> Qabul
+                            </a>
+                        </a></td>
+                    <tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-success">Faol berilmalar yo'q</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Qabul qilingan mahsulotlar -->
+<div class="card mt-3">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-boxes"></i> Qabul qilingan mahsulotlar</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Sana</th>
+                        <th>Mahsulot</th>
+                        <th>Miqdor</th>
+                        <th>Og'irlik</th>
+                        <th>Sifat</th>
+                        <th>To'lov</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in receipts %}
+                    <tr>
+                        <td>{{ receipt.receipt_date|date:"Y-m-d" }}</a></td>
+                        <td>{{ receipt.product.name }}</a></td>
+                        <td>{{ receipt.quantity_received }} dona</a></td>
+                        <td>{{ receipt.total_weight|floatformat:2 }} kg</a></td>
+                        <td>
+                            {% if receipt.quality_status == 'good' %}
+                                <span class="badge bg-success">Yaroqli</span>
+                            {% else %}
+                                <span class="badge bg-danger">Yaroqsiz</span>
+                            {% endif %}
+                        </a></td>
+                        <td class="fw-bold">
+                            {% if receipt.quality_status == 'good' %}
+                                {% if master.preferred_currency == 'usd' %}
+                                    {{ receipt.total_payment|floatformat:2 }} USD
+                                {% else %}
+                                    {{ receipt.total_payment|floatformat:0 }} so'm
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a></td>
+                    </tr>
+                    {% empty %}
+                    <td><td colspan="6" class="text-center">Mahsulot yo'q</a></td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustaga ip berish{% endblock %}
+{% block page_title %}Ustaga ip berish{% endblock %}
+{% block page_icon %}arrow-right{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-arrow-right"></i> Ustaga ip berish</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" id="issueForm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="master" class="form-label">Usta *</label>
+                        <select name="master" id="master" class="form-select" required>
+                            <option value="">-- Ustani tanlang --</option>
+                            {% for master in masters %}
+                            <option value="{{ master.id }}" {% if request.GET.master == master.id|stringformat:"s" %}selected{% endif %}>
+                                {{ master.get_full_name|default:master.username }}
+                                ({{ master.phone|default:"-" }})
+                                - {% if master.preferred_currency == 'usd' %}USD{% else %}so'm{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="expected_product" class="form-label">Mahsulot *</label>
+                        <select name="expected_product" id="expected_product" class="form-select" required>
+                            <option value="">-- Mahsulot tanlang --</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}"
+                                    data-price-uzs="{{ product.weaving_price_uzs|stringformat:'f' }}"
+                                    data-price-usd="{{ product.weaving_price_usd|stringformat:'f' }}">
+                                {{ product.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Ip tarkibi va kg kiritish maydonlari -->
+                    <div id="threadsContainer" style="display: none;">
+                        <label class="form-label">Mahsulot tarkibidagi iplar va beriladigan miqdor (kg):</label>
+                        <div id="threadsFields"></div>
+                        <div class="alert alert-info mt-2" id="calculationResult" style="display: none;">
+                            <strong>Hisoblangan mahsulot soni:</strong> <span id="expectedPieces">0</span> dona
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Izoh</label>
+                        <textarea name="note" id="note" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Saqlash</button>
+                    <a href="{% url 'orders:dashboard' %}" class="btn btn-secondary">Bekor qilish</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mahsulot ma'lumotlarini olish uchun (Django backend dan)
+    const productsData = {
+        {% for product in products %}
+        {{ product.id }}: {
+            threads: [
+                {% for pt in product.threads.all %}
+                {
+                    id: {{ pt.thread.id }},
+                    name: "{{ pt.thread.name }}",
+                    per_unit: {{ pt.quantity_per_unit|stringformat:"f" }},
+                    stock: {{ pt.thread.current_stock|stringformat:"f" }}
+                },
+                {% endfor %}
+            ],
+            price_uzs: {{ product.weaving_price_uzs|stringformat:"f" }},
+            price_usd: {{ product.weaving_price_usd|stringformat:"f" }}
+        },
+        {% endfor %}
+    };
+
+    const masterCurrency = "{{ request.user.preferred_currency|default:'uzs' }}";
+
+    const productSelect = document.getElementById('expected_product');
+    const threadsContainer = document.getElementById('threadsContainer');
+    const threadsFields = document.getElementById('threadsFields');
+    const calculationResult = document.getElementById('calculationResult');
+    const expectedPiecesSpan = document.getElementById('expectedPieces');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function calculateExpectedQuantity() {
+        let selectedId = productSelect.value;
+        if (!selectedId || !productsData[selectedId]) return;
+
+        let threads = productsData[selectedId].threads;
+        let possiblePieces = [];
+        let allFilled = true;
+
+        for (let i = 0; i < threads.length; i++) {
+            let input = document.getElementById(`thread_kg_${threads[i].id}`);
+            if (!input) continue;
+            let kg = parseFloat(input.value);
+            if (isNaN(kg) || kg <= 0) {
+                allFilled = false;
+                break;
+            }
+            let perUnit = threads[i].per_unit;
+            let pieces = Math.floor(kg / perUnit);
+            possiblePieces.push(pieces);
+        }
+
+        if (allFilled && possiblePieces.length > 0) {
+            let minPieces = Math.min(...possiblePieces);
+            expectedPiecesSpan.textContent = minPieces;
+            calculationResult.style.display = 'block';
+            submitBtn.disabled = false;
+        } else {
+            calculationResult.style.display = 'none';
+            submitBtn.disabled = true;
+        }
+    }
+
+    function updateThreadFields() {
+        let selectedId = productSelect.value;
+        if (!selectedId || !productsData[selectedId]) {
+            threadsContainer.style.display = 'none';
+            return;
+        }
+
+        let threads = productsData[selectedId].threads;
+        let html = '';
+        for (let i = 0; i < threads.length; i++) {
+            let t = threads[i];
+            html += `
+                <div class="mb-2">
+                    <label class="form-label">${t.name} (1 dona uchun ${t.per_unit.toFixed(3)} kg)</label>
+                    <input type="number" name="thread_kg_${t.id}" id="thread_kg_${t.id}"
+                           step="0.001" class="form-control" placeholder="Beriladigan ip miqdori (kg)" required>
+                    <div class="form-text text-muted">Omborda mavjud: ${t.stock.toFixed(3)} kg</div>
+                </div>
+            `;
+        }
+        threadsFields.innerHTML = html;
+        threadsContainer.style.display = 'block';
+
+        // inputlarga event listener qo'shish
+        for (let i = 0; i < threads.length; i++) {
+            let input = document.getElementById(`thread_kg_${threads[i].id}`);
+            if (input) {
+                input.addEventListener('input', calculateExpectedQuantity);
+            }
+        }
+        calculateExpectedQuantity();
+    }
+
+    productSelect.addEventListener('change', updateThreadFields);
+
+    // Sahifa yuklanganda
+    document.addEventListener('DOMContentLoaded', function() {
+        if (productSelect.value) {
+            updateThreadFields();
+        }
+    });
+</script>
+{% endblock %}

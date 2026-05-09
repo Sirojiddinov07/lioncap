@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Ruxsat yo'q - 403{% endblock %}
+{% block page_title %}Ruxsat yo'q{% endblock %}
+{% block page_icon %}ban{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> 403 - Ruxsat yo'q</h4>
+            </div>
+            <div class="card-body py-5">
+                <i class="fas fa-lock fa-4x text-danger mb-3"></i>
+                <h3 class="mb-3">Sizga bu sahifaga kirish ruxsat etilmagan!</h3>
+                <p class="text-muted mb-4">
+                    Ushbu operatsiyani bajarish uchun sizda yetarli huquqlar mavjud emas.<br>
+                    Agar kerakli huquqlarga ega bo'lishingiz kerak deb hisoblasangiz, administratorga murojaat qiling.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'orders:dashboard' %}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Bosh sahifaga qaytish
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Orqaga qaytish
+                    </a>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <small>Agar xatolik yuz bergan deb hisoblasangiz, administrator bilan bog'lanishingiz mumkin.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

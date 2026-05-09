@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Moliyaviy hisobot{% endblock %}
+{% block page_title %}Moliyaviy hisobot{% endblock %}
+{% block page_icon %}dollar-sign{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-thread"></i> Umumiy ip xarajati</h6>
+                <h3 class="mb-0">{{ total_thread_cost|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-tools"></i> Ishlab chiqarish xarajati</h6>
+                <h3 class="mb-0">{{ total_production_cost|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-line"></i> Yalpi daromad</h6>
+                <h3 class="mb-0">{{ gross_profit|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-line"></i> Sof foyda</h6>
+                <h3 class="mb-0">{{ net_profit|floatformat:0 }} so'm</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Foyda ko'rsatkichlari</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-success">
+                            <h6>Yalpi foyda marjasi</h6>
+                            <h2>{{ profit_margin|floatformat:1 }}%</h2>
+                            <small>Yalpi daromad / Ishlab chiqarish xarajati × 100%</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="progress" style="height: 200px; flex-direction: column;">
+                            <div class="progress-bar bg-success" style="width: 100%; height: {{ profit_margin|floatformat:0 }}%;">
+                                {{ profit_margin|floatformat:1 }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Oxirgi sotuvlar</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Sana</th>
+                                <th>Usta</th>
+                                <th>Mahsulot</th>
+                                <th>Miqdor (dona)</th>
+                                <th>Og'irlik (kg)</th>
+                                <th>Daromad (so'm)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for receipt in receipts %}
+                            <tr>
+                                <td>{{ receipt.receipt_date|date:"Y-m-d" }}</td>
+                                <td>{{ receipt.material_issue.master.get_full_name|default:receipt.material_issue.master.username }}</td>
+                                <td>{{ receipt.product.name }}</td>
+                                <td>{{ receipt.quantity_received }}</td>
+                                <td>{{ receipt.total_weight|floatformat:2 }}</td>
+                                <td>{{ receipt.total_weight|floatformat:0 }} so'm</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">Ma'lumotlar mavjud emas</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

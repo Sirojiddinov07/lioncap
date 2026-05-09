@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustalar hisoboti{% endblock %}
+{% block page_title %}Ustalar hisoboti{% endblock %}
+{% block page_icon %}users{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Usta</th>
+                        <th>Telefon</th>
+                        <th>Olingan ip (kg)</th>
+                        <th>Yaroqli (dona)</th>
+                        <th>Yaroqli (kg)</th>
+                        <th>Yaroqsiz (dona)</th>
+                        <th>Yaroqsiz (kg)</th>
+                        <th>Qarzi (dona)</th>
+                        <th>Samaradorlik</th>
+                        <th>Brak foizi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in masters_data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="{% url 'orders:master_detail' data.master.id %}">
+                                {{ data.master.get_full_name|default:data.master.username }}
+                            </a>
+                        </td>
+                        <td>{{ data.master.phone|default:"-" }}</td>
+                        <td>{{ data.total_thread_taken|floatformat:2 }}</td>
+                        <td class="text-success">{{ data.total_good_quantity }}</td>
+                        <td>{{ data.total_good_weight|floatformat:2 }}</td>
+                        <td class="text-danger">{{ data.total_defective_quantity }}</td>
+                        <td>{{ data.total_defective_weight|floatformat:2 }}</td>
+                        <td class="{% if data.product_debt > 0 %}text-danger fw-bold{% endif %}">
+                            {{ data.product_debt }}
+                        </td>
+                        <td>
+                            {% if data.efficiency > 100 %}
+                                <span class="badge bg-success">{{ data.efficiency|floatformat:1 }}%</span>
+                            {% elif data.efficiency >= 80 %}
+                                <span class="badge bg-info">{{ data.efficiency|floatformat:1 }}%</span>
+                            {% elif data.efficiency > 0 %}
+                                <span class="badge bg-warning">{{ data.efficiency|floatformat:1 }}%</span>
+                            {% else %}
+                                <span class="badge bg-secondary">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.defect_rate > 20 %}
+                                <span class="badge bg-danger">{{ data.defect_rate|floatformat:1 }}%</span>
+                            {% elif data.defect_rate > 10 %}
+                                <span class="badge bg-warning">{{ data.defect_rate|floatformat:1 }}%</span>
+                            {% elif data.defect_rate > 0 %}
+                                <span class="badge bg-info">{{ data.defect_rate|floatformat:1 }}%</span>
+                            {% else %}
+                                <span class="badge bg-success">0%</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" class="text-center">Ma'lumotlar mavjud emas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-secondary">
+                    <tr>
+                        <th colspan="3">Jami:</th>
+                        <th></th>
+                        <th>{{ total_good_quantity }}</th>
+                        <th>{{ total_good_weight|floatformat:2 }}</th>
+                        <th>{{ total_defective_quantity }}</th>
+                        <th>{{ total_defective_weight|floatformat:2 }}</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

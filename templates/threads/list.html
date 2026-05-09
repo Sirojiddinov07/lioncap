@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Iplar ombori{% endblock %}
+{% block page_title %}Iplar ombori{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-8">
+                <input type="text" name="search" class="form-control" placeholder="Ip nomi bo'yicha qidirish..." value="{{ search_query }}">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search"></i> Qidirish
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+        <h5>Jami ombor: {{ total_stock|floatformat:2 }} kg</h5>
+        <a href="{% url 'threads:incoming' %}" class="btn btn-light btn-sm">
+            <i class="fas fa-plus"></i> Ip kirimi
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Ip nomi</th>
+                        <th>Rangi</th>
+                        <th>Joriy qoldiq (kg)</th>
+                        <th>Narxi (1 kg)</th>
+                        <th>Holati</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for thread in threads %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ thread.name }}</td>
+                        <td>{{ thread.color|default:"-" }}</td>
+                        <td class="{% if thread.current_stock < thread.min_stock_threshold %}text-danger fw-bold{% endif %}">
+                            {{ thread.current_stock|floatformat:2 }} kg
+                        </td>
+                        <td>{{ thread.price_per_unit|floatformat:2 }} USD</td>
+                        <td>
+                            {% if thread.is_out_of_stock %}
+                                <span class="badge bg-danger">Tugagan</span>
+                            {% elif thread.is_low_stock %}
+                                <span class="badge bg-warning">Kam</span>
+                            {% else %}
+                                <span class="badge bg-success">Yetarli</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">Iplar mavjud emas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
