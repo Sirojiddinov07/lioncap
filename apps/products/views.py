@@ -41,3 +41,19 @@ def product_edit(request, pk):
     else:
         form = ProductForm(instance=product)
     return render(request, 'products/form.html', {'form': form, 'title': 'Mahsulotni tahrirlash'})
+
+
+@login_required
+def product_detail(request, pk):
+    """Mahsulot tafsilotlari sahifasi"""
+
+    product = get_object_or_404(Product, id=pk)
+
+    #
+    # # Debug uchun
+    # print(f"Product: {product.name}")
+    # print(f"Stock quantity: {product.stock_quantity}")
+    # print(f"Min threshold: {product.min_stock_threshold}")
+    # print(f"Default thread: {product.default_thread}")
+
+    return render(request, 'products/detail.html', {'product': product})

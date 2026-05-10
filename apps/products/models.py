@@ -13,11 +13,11 @@ class Product(BaseModel):
         verbose_name="1 dona og'irligi (kg)"
     )
     weaving_price_uzs = models.DecimalField(
-        max_digits=12, decimal_places=2, default=0,
+        max_digits=12, decimal_places=5, default=0,
         verbose_name="To'qish narxi (so'm)"
     )
     weaving_price_usd = models.DecimalField(
-        max_digits=12, decimal_places=2, default=0,
+        max_digits=12, decimal_places=5, default=0,
         verbose_name="To'qish narxi (dollar)"
     )
     default_thread = models.ForeignKey(
@@ -25,6 +25,24 @@ class Product(BaseModel):
         verbose_name='Standart ip'
     )
     is_active = models.BooleanField(default=True, verbose_name='Faol')
+
+    # YANGI FIELD'LAR
+    image = models.ImageField(
+        upload_to='products/',
+        blank=True,
+        null=True,
+        verbose_name='Mahsulot rasmi'
+    )
+    stock_quantity = models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name='Ombordagi soni (dona)'
+    )
+    min_stock_threshold = models.IntegerField(
+        default=10,
+        validators=[MinValueValidator(0)],
+        verbose_name='Minimal zaxira chegarasi'
+    )
 
     class Meta:
         verbose_name = 'Mahsulot'
@@ -41,6 +59,16 @@ class Product(BaseModel):
         for pt in self.threads.all():
             total += pt.quantity_per_unit
         return total
+
+    @property
+    def is_low_stock(self):
+        """Zaxira kamligini tekshirish"""
+        return self.stock_quantity <= self.min_stock_threshold
+
+    @property
+    def is_out_of_stock(self):
+        """Mahsulot tugaganligini tekshirish"""
+        return self.stock_quantity == 0
 
 
 class ProductThread(BaseModel):

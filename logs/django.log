@@ -2908,3 +2908,530 @@ WARNING 2026-05-09 13:36:39,026 log 15214 6198685696 Not Found: /login/
 WARNING 2026-05-09 13:36:39,207 log 15214 6198685696 Not Found: /login/
 WARNING 2026-05-09 13:37:10,958 log 15214 6265991168 Not Found: /favicon.ico
 INFO 2026-05-09 14:06:25,818 autoreload 15498 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-09 16:40:20,501 autoreload 15901 8446795520 Watching for file changes with StatReloader
+WARNING 2026-05-09 16:40:25,549 log 15901 6163869696 Not Found: /favicon.ico
+INFO 2026-05-10 15:47:41,434 autoreload 16693 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 15:51:03,306 autoreload 16693 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/admin.py changed, reloading.
+INFO 2026-05-10 15:51:03,500 autoreload 16720 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 15:51:19,924 autoreload 16720 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/admin.py changed, reloading.
+INFO 2026-05-10 15:51:20,096 autoreload 16731 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 15:58:56,548 log 16731 6201274368 Internal Server Error: /products/6/detail/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/views.py", line 50, in product_detail
+    return render(request, 'products/detail.html', {'product': product})
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    return parser.parse()
+           ~~~~~~~~~~~~^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 515, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 578, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 5: 'block'. Looking for one of: endblock.
+ERROR 2026-05-10 16:00:53,475 log 16731 6201274368 Internal Server Error: /products/6/detail/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/views.py", line 50, in product_detail
+    return render(request, 'products/detail.html', {'product': product})
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    return parser.parse()
+           ~~~~~~~~~~~~^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 961, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 508, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 861, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 481, in parse
+    raise self.error(token, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 479, in parse
+    filter_expression = self.compile_filter(token.contents)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 597, in compile_filter
+    return FilterExpression(token, self)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 693, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/template/base.py", line 603, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'mul'
+INFO 2026-05-10 16:07:26,494 autoreload 16731 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/views.py changed, reloading.
+INFO 2026-05-10 16:07:26,831 autoreload 16817 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:12:01,546 autoreload 16817 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/views.py changed, reloading.
+INFO 2026-05-10 16:12:01,821 autoreload 16868 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:12:10,148 autoreload 16886 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:20:31,964 autoreload 16886 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:20:32,273 autoreload 16947 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:21:23,500 autoreload 16947 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py changed, reloading.
+INFO 2026-05-10 16:21:23,652 autoreload 16971 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:21:59,982 autoreload 17026 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:26:33,959 autoreload 17026 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py changed, reloading.
+INFO 2026-05-10 16:26:34,151 autoreload 17071 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 16:27:07,877 log 17071 6202929152 Internal Server Error: /
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py", line 25, in dashboard
+    if balance.has_any_debt:
+       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MasterBalance' object has no attribute 'has_any_debt'
+INFO 2026-05-10 16:27:51,108 autoreload 17071 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:27:51,306 autoreload 17084 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 16:28:14,327 log 17084 6203322368 Internal Server Error: /
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py", line 25, in dashboard
+    if balance.has_any_debt:
+       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MasterBalance' object has no attribute 'has_any_debt'
+INFO 2026-05-10 16:29:19,500 autoreload 17084 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:29:19,695 autoreload 17097 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:29:43,284 autoreload 17097 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py changed, reloading.
+INFO 2026-05-10 16:29:43,457 autoreload 17109 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 16:29:47,502 log 17109 6199193600 Internal Server Error: /
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 329, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: orders_masterbalance.total_defective_product_given
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/views.py", line 22, in dashboard
+    balance, _ = MasterBalance.objects.get_or_create(master=master)
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/query.py", line 948, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/query.py", line 645, in get
+    num = len(clone)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/query.py", line 382, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/debug_toolbar/panels/sql/tracking.py", line 235, in execute
+    return self._record(super().execute, sql, params)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/debug_toolbar/panels/sql/tracking.py", line 160, in _record
+    return method(sql, params)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/db/backends/sqlite3/base.py", line 329, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: orders_masterbalance.total_defective_product_given
+INFO 2026-05-10 16:30:37,245 autoreload 17171 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:37:03,403 autoreload 17171 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:37:03,563 autoreload 17221 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:48:54,263 autoreload 17221 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:48:54,473 autoreload 17279 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:49:39,535 autoreload 17279 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 16:49:39,682 autoreload 17295 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 16:50:19,825 autoreload 17342 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:11:33,295 autoreload 17342 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/admin.py changed, reloading.
+INFO 2026-05-10 17:11:33,547 autoreload 17442 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:14:52,620 autoreload 17442 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/admin.py changed, reloading.
+INFO 2026-05-10 17:14:52,778 autoreload 17465 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:15:20,442 autoreload 17465 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/threads/admin.py changed, reloading.
+INFO 2026-05-10 17:15:20,634 autoreload 17493 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:17:07,259 autoreload 17493 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/admin.py changed, reloading.
+INFO 2026-05-10 17:17:07,431 autoreload 17534 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:17:32,061 autoreload 17534 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/admin.py changed, reloading.
+INFO 2026-05-10 17:17:32,212 autoreload 17545 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:18:03,777 autoreload 17545 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/products/admin.py changed, reloading.
+INFO 2026-05-10 17:18:03,955 autoreload 17555 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:18:25,532 autoreload 17555 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/threads/admin.py changed, reloading.
+INFO 2026-05-10 17:18:25,724 autoreload 17566 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 17:18:44,376 log 17566 6163279872 Internal Server Error: /admin/orders/productreceipt/32/change/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 837, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 652, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 310, in __new__
+    fields = fields_for_model(
+        opts.model,
+    ...<11 lines>...
+        form_declared_fields=new_class.declared_fields,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 205, in fields_for_model
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'created_at' cannot be specified for ProductReceipt model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 716, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/sites.py", line 240, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1948, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1804, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1839, in _changeform_view
+    ModelForm = self.get_form(
+        request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 839, in get_form
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'created_at' cannot be specified for ProductReceipt model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class ProductReceiptAdmin.
+INFO 2026-05-10 17:21:07,711 autoreload 17566 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/core/models.py changed, reloading.
+INFO 2026-05-10 17:21:07,869 autoreload 17613 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:22:31,583 autoreload 17742 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 17:22:48,320 log 17742 6160150528 Internal Server Error: /admin/orders/materialissue/37/change/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 837, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 652, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 310, in __new__
+    fields = fields_for_model(
+        opts.model,
+    ...<11 lines>...
+        form_declared_fields=new_class.declared_fields,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 205, in fields_for_model
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 716, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/sites.py", line 240, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1948, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1804, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1839, in _changeform_view
+    ModelForm = self.get_form(
+        request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 839, in get_form
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class MaterialIssueAdmin.
+INFO 2026-05-10 17:23:55,762 autoreload 17742 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/admin.py changed, reloading.
+INFO 2026-05-10 17:23:55,932 autoreload 17754 8446795520 Watching for file changes with StatReloader
+ERROR 2026-05-10 17:24:00,531 log 17754 6160216064 Internal Server Error: /admin/orders/materialissue/37/change/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 837, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 652, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 310, in __new__
+    fields = fields_for_model(
+        opts.model,
+    ...<11 lines>...
+        form_declared_fields=new_class.declared_fields,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 205, in fields_for_model
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 716, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/sites.py", line 240, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1948, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1804, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1839, in _changeform_view
+    ModelForm = self.get_form(
+        request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 839, in get_form
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class MaterialIssueAdmin.
+ERROR 2026-05-10 17:24:01,737 log 17754 6160216064 Internal Server Error: /admin/orders/materialissue/37/change/
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 837, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 652, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 310, in __new__
+    fields = fields_for_model(
+        opts.model,
+    ...<11 lines>...
+        form_declared_fields=new_class.declared_fields,
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/forms/models.py", line 205, in fields_for_model
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 716, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/sites.py", line 240, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1948, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1804, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1839, in _changeform_view
+    ModelForm = self.get_form(
+        request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+    )
+  File "/Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 839, in get_form
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: 'issue_date' cannot be specified for MaterialIssue model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class MaterialIssueAdmin.
+INFO 2026-05-10 17:25:10,776 autoreload 17754 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/core/models.py changed, reloading.
+INFO 2026-05-10 17:25:10,948 autoreload 17768 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:26:39,179 autoreload 17768 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 17:26:39,373 autoreload 17786 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:27:02,001 autoreload 17786 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 17:27:02,197 autoreload 17810 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:27:35,007 autoreload 17810 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 17:27:35,195 autoreload 17820 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:27:57,760 autoreload 17820 8446795520 /Users/sirojiddinovsavron/Desktop/myprojects/bosh_kiyim_sistemi/apps/orders/models.py changed, reloading.
+INFO 2026-05-10 17:27:57,933 autoreload 17833 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:28:10,833 autoreload 17886 8446795520 Watching for file changes with StatReloader
+INFO 2026-05-10 17:50:06,468 autoreload 18371 8446795520 Watching for file changes with StatReloader

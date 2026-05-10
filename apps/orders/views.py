@@ -13,15 +13,32 @@ from ..users.views import admin_required
 
 @login_required
 def dashboard(request):
+    """Dashboard view"""
     masters = User.objects.filter(role='master')
     masters_with_debt = []
+    masters_with_low_ip = []
+
     for master in masters:
         balance, _ = MasterBalance.objects.get_or_create(master=master)
-        if balance.has_debt:
+
+        # Qarzi bor ustalar (property ishlatiladi)
+        if balance.has_any_debt:
             masters_with_debt.append(balance)
+
+        # Ip qoldig'i kam bo'lgan ustalar (100 kg dan kam)
+        if balance.is_ip_low:
+            masters_with_low_ip.append({
+                'master': master,
+                'remaining_ip': balance.remaining_ip,
+                'product_debt': balance.product_debt,
+            })
+
+    # Ro'yxatni qolgan ip miqdoriga qarab tartiblash
+    masters_with_low_ip.sort(key=lambda x: x['remaining_ip'])
 
     context = {
         'masters_with_debt': masters_with_debt,
+        'masters_with_low_ip': masters_with_low_ip,
         'total_masters': masters.count(),
         'total_threads': Thread.objects.count(),
         'total_products': Product.objects.filter(is_active=True).count(),
@@ -284,17 +301,8 @@ def add_payment(request, master_id):
 def receipt_create(request, issue_id):
     material_issue = get_object_or_404(MaterialIssue, id=issue_id)
 
-    # Berilgan umumiy ip miqdorini olish (quantity field'dan)
+    # Berilgan umumiy ip miqdorini olish
     given_weight = float(material_issue.quantity) if material_issue.quantity else 0
-
-    # Agar quantity 0 bo'lsa, ThreadTransaction dan hisoblab olamiz (zaxira)
-    if given_weight == 0:
-        total_given = ThreadTransaction.objects.filter(
-            related_master=material_issue.master,
-            transaction_type='outgoing',
-            created_at__gte=material_issue.created_at
-        ).aggregate(total=Sum('quantity'))['total'] or Decimal('0')
-        given_weight = float(total_given)
 
     if request.method == 'POST':
         product_id = request.POST.get('product')
@@ -305,8 +313,10 @@ def receipt_create(request, issue_id):
         defect_description = request.POST.get('defect_description', '')
         note = request.POST.get('note', '')
 
+        # 1 dona og'irligini hisoblash
         actual_weight_per_item = total_weight / quantity
 
+        # Yaroqli mahsulot uchun miqdor cheklovi
         if quality_status == QualityStatus.GOOD and quantity > material_issue.current_balance_quantity:
             messages.error(
                 request,
@@ -314,6 +324,7 @@ def receipt_create(request, issue_id):
             )
             return redirect('orders:receipt_create', issue_id=issue_id)
 
+        # Og'irlik cheklovi
         if float(total_weight) > given_weight:
             messages.error(
                 request,
@@ -321,9 +332,24 @@ def receipt_create(request, issue_id):
             )
             return redirect('orders:receipt_create', issue_id=issue_id)
 
+        # Mahsulotni olish (to'lovni hisoblash uchun)
+        product = get_object_or_404(Product, id=product_id)
+
+        # To'lov summasini hisoblash
+        if quality_status == QualityStatus.GOOD:
+            if material_issue.master.preferred_currency == 'usd':
+                total_payment = quantity * product.weaving_price_usd
+                currency = "USD"
+            else:
+                total_payment = quantity * product.weaving_price_uzs
+                currency = "so'm"
+        else:
+            total_payment = 0
+            currency = ""
+
         receipt = ProductReceipt.objects.create(
             material_issue=material_issue,
-            product_id=product_id,
+            product=product,
             quantity_received=quantity,
             quality_status=quality_status,
             actual_weight_per_item=actual_weight_per_item,
@@ -333,23 +359,18 @@ def receipt_create(request, issue_id):
         )
 
         if quality_status == QualityStatus.GOOD:
-            currency = material_issue.master.preferred_currency
-            if currency == 'usd':
-                messages.success(
-                    request,
-                    f"{quantity} dona yaroqli mahsulot qabul qilindi. "
-                    f"Umumiy og'irlik: {total_weight} kg, "
-                    f"To'lov: {receipt.total_payment:,.2f} USD"
-                )
-            else:
-                messages.success(
-                    request,
-                    f"{quantity} dona yaroqli mahsulot qabul qilindi. "
-                    f"Umumiy og'irlik: {total_weight} kg, "
-                    f"To'lov: {receipt.total_payment:,.0f} so'm"
-                )
+            messages.success(
+                request,
+                f"✅ {quantity} dona yaroqli mahsulot qabul qilindi.\n"
+                f"📦 Umumiy og'irlik: {total_weight} kg\n"
+                f"💰 To'lov: {total_payment:,.2f} {currency}"
+            )
         else:
-            messages.warning(request, f"{quantity} dona yaroqsiz mahsulot qabul qilindi")
+            messages.warning(
+                request,
+                f"⚠️ {quantity} dona yaroqsiz mahsulot qabul qilindi.\n"
+                f"📦 Umumiy og'irlik: {total_weight} kg"
+            )
 
         return redirect('orders:master_detail', master_id=material_issue.master.id)
 
@@ -362,6 +383,7 @@ def receipt_create(request, issue_id):
         'given_weight': given_weight,
     }
     return render(request, 'orders/receipt_form.html', context)
+
 
 
 @login_required

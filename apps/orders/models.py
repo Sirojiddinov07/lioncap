@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator
@@ -12,13 +13,18 @@ from apps.products.models import Product
 
 class MaterialIssue(BaseModel):
     master = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'master'})
-    issue_date = models.DateField(auto_now_add=True)
+    issue_date = models.DateField(default=datetime.now, verbose_name='Berilgan sana')  # auto_now_add olib tashlandi
     thread = models.ForeignKey(Thread, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.DecimalField(max_digits=12, decimal_places=3, default=0)  # Bu umumiy ip miqdori
     expected_product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     expected_quantity = models.IntegerField(default=0, validators=[MinValueValidator(1)])
     is_closed = models.BooleanField(default=False)
     note = models.TextField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.issue_date:
+            self.issue_date = datetime.now().date()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Ip berish'
@@ -52,7 +58,7 @@ class ProductReceipt(BaseModel):
         MaterialIssue, on_delete=models.CASCADE, related_name='receipts',
         verbose_name='Ip berish'
     )
-    receipt_date = models.DateField(auto_now_add=True, verbose_name='Sana')
+    receipt_date = models.DateField(default=datetime.now, verbose_name='Qabul qilingan sana')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Mahsulot')
     quantity_received = models.IntegerField(
         validators=[MinValueValidator(1)], verbose_name='Miqdor (dona)'
@@ -72,6 +78,11 @@ class ProductReceipt(BaseModel):
     )
     note = models.TextField(blank=True, verbose_name='Izoh')
 
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.receipt_date:
+            self.receipt_date = datetime.now().date()
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Mahsulot qabul qilish'
         verbose_name_plural = 'Mahsulot qabul qilishlar'
@@ -82,20 +93,16 @@ class ProductReceipt(BaseModel):
         return self.quantity_received * self.actual_weight_per_item
 
     @property
-    def currency(self):
-        """Ustaning afzal valyutasi"""
-        return self.material_issue.master.preferred_currency
-
-    @property
     def total_payment(self):
-        """Valyutaga qarab to'lov summasini qaytaradi"""
-        if self.quality_status != QualityStatus.GOOD:
-            return 0
-
-        master = self.material_issue.master
-        if master.preferred_currency == CurrencyType.USD:
-            return self.quantity_received * self.product.weaving_price_usd
-        return self.quantity_received * self.product.weaving_price_uzs
+        """To'lov summasi (faqat yaroqli mahsulot uchun)"""
+        if self.quality_status == QualityStatus.GOOD:
+            # Ustaning valyutasiga qarab to'lov
+            master = self.material_issue.master
+            if master.preferred_currency == 'usd':
+                return self.quantity_received * self.product.weaving_price_usd
+            else:
+                return self.quantity_received * self.product.weaving_price_uzs
+        return 0
 
     def save(self, *args, **kwargs):
         if not self.actual_weight_per_item:
@@ -105,17 +112,25 @@ class ProductReceipt(BaseModel):
         super().save(*args, **kwargs)
 
         if is_new and self.quality_status == QualityStatus.GOOD:
+            # Usta balansini yangilash
             balance, _ = MasterBalance.objects.get_or_create(master=self.material_issue.master)
             balance.total_product_given += self.quantity_received
             balance.total_weight_given += self.total_weight
 
-            # Valyutaga qarab to'lov qo'shiladi
-            if self.currency == CurrencyType.USD:
+            # To'lov qo'shish (valyutaga qarab)
+            master = self.material_issue.master
+            if master.preferred_currency == 'usd':
                 balance.total_payment_due_usd += self.total_payment
             else:
                 balance.total_payment_due_uzs += self.total_payment
             balance.save()
 
+            # Mahsulot omboriga qo'shish
+            product = self.product
+            product.stock_quantity += self.quantity_received
+            product.save()
+
+            # Ip berishni yopish
             if self.material_issue.current_balance_quantity <= 0:
                 self.material_issue.is_closed = True
                 self.material_issue.save()
@@ -124,8 +139,9 @@ class ProductReceipt(BaseModel):
         return f"{self.material_issue.master} - {self.quantity_received} dona"
 
 
+
 class MasterBalance(BaseModel):
-    """Usta balansi - ikki valyutada"""
+    """Usta balansi"""
     master = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='balance',
         limit_choices_to={'role': 'master'}, verbose_name='Usta'
@@ -137,11 +153,18 @@ class MasterBalance(BaseModel):
         verbose_name='Jami olingan ip (kg)'
     )
 
-    # Mahsulot topshirish
+    # Mahsulot topshirish (yaroqli)
     total_product_given = models.IntegerField(default=0, verbose_name='Jami topshirilgan (dona)')
     total_weight_given = models.DecimalField(
         max_digits=15, decimal_places=3, default=0,
         verbose_name='Jami og\'irlik (kg)'
+    )
+
+    # Yaroqsiz mahsulotlar
+    total_defective_product_given = models.IntegerField(default=0, verbose_name='Jami yaroqsiz (dona)')
+    total_defective_weight_given = models.DecimalField(
+        max_digits=15, decimal_places=3, default=0,
+        verbose_name='Jami yaroqsiz og\'irlik (kg)'
     )
 
     # To'lovlar - so'm
@@ -173,17 +196,16 @@ class MasterBalance(BaseModel):
 
     @property
     def product_debt(self):
-        """Joriy mahsulot qarzi (faqat yopilmagan berilmalar bo'yicha)"""
+        """Joriy mahsulot qarzi (faqat yopilmagan berilmalar bo'yicha) - hech qachon manfiy emas"""
         active_issues = MaterialIssue.objects.filter(
             master=self.master,
             is_closed=False
         )
-
         total_expected = active_issues.aggregate(
             total=Sum('expected_quantity')
         )['total'] or 0
 
-        # Qabul qilingan yaroqli mahsulotlar (faqat yopilmagan berilmalar uchun)
+        # Qabul qilingan mahsulotlar faqat ACTIVE berilmalar uchun
         total_received = 0
         for issue in active_issues:
             received = issue.receipts.filter(
@@ -197,35 +219,29 @@ class MasterBalance(BaseModel):
 
     @property
     def payment_balance_uzs(self):
-        """So'mdagi qolgan qarz"""
         return self.total_payment_due_uzs - self.total_payment_paid_uzs
 
     @property
     def payment_balance_usd(self):
-        """Dollardagi qolgan qarz"""
         return self.total_payment_due_usd - self.total_payment_paid_usd
 
     @property
     def payment_balance_display(self):
-        """Ustaning valyutasida qolgan qarz"""
-        if self.master.preferred_currency == CurrencyType.USD:
+        if self.master.preferred_currency == 'usd':
             return f"{self.payment_balance_usd:,.2f} USD"
         return f"{self.payment_balance_uzs:,.0f} so'm"
 
     @property
-    def total_payment_due_display(self):
-        """Ustaning valyutasida jami to'lanadigan"""
-        if self.master.preferred_currency == CurrencyType.USD:
-            return f"{self.total_payment_due_usd:,.2f} USD"
-        return f"{self.total_payment_due_uzs:,.0f} so'm"
-
-    @property
-    def total_payment_paid_display(self):
-        """Ustaning valyutasida to'langan"""
-        if self.master.preferred_currency == CurrencyType.USD:
-            return f"{self.total_payment_paid_usd:,.2f} USD"
-        return f"{self.total_payment_paid_uzs:,.0f} so'm"
-
-    @property
-    def has_debt(self):
+    def has_any_debt(self):
+        """Ustada qarz borligini tekshiradi"""
         return self.product_debt > 0 or self.payment_balance_uzs > 0 or self.payment_balance_usd > 0
+
+    @property
+    def remaining_ip(self):
+        """Ustaning qolgan ip miqdori (kg)"""
+        return self.total_thread_taken - self.total_weight_given
+
+    @property
+    def is_ip_low(self):
+        """Ip qoldig'i kamligini tekshirish (100 kg dan kam)"""
+        return self.remaining_ip < 100
